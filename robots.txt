@@ -1,0 +1,5 @@
+# Подсказка для поисковых роботов: индексировать можно всё, карта сайта — ниже
+User-agent: *
+Allow: /
+
+Sitemap: https://mrudman87-blip.github.io/sweet-day/sitemap.xml

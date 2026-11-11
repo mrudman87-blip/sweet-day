@@ -10,10 +10,10 @@ os.makedirs(DST, exist_ok=True)
 
 # имя на сайте: (исходник, ширины)
 PICK = {
-    "hero": ("hero_2.png", [480, 800, 1024]),
-    "cake-berry": ("cake-berry_2.png", [400, 800]),
-    "cake-choco": ("cake-choco_2.png", [400, 800]),
-    "cake-kids": ("cake-kids_2.png", [400, 800]),
+    "hero": ("hero_2.png", [480, 600, 800, 1024]),
+    "cake-berry": ("cake-berry_2.png", [400, 600, 800]),
+    "cake-choco": ("cake-choco_2.png", [400, 600, 800]),
+    "cake-kids": ("cake-kids_2.png", [400, 600, 800]),
 }
 
 total = 0

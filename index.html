@@ -23,11 +23,10 @@
   <!-- Иконка вкладки: SVG прямо в коде, без отдельного файла -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
 
-  <!-- Шрифты: Unbounded (заголовки) и Manrope (текст), оба с кириллицей.
-       preconnect заранее открывает соединение — шрифты грузятся быстрее. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Шрифты лежат на нашем сайте (папка fonts). preload — начать качать сразу, ещё до чтения CSS.
+       Грузим заранее только кириллицу: она нужна на первом экране. -->
+  <link rel="preload" href="fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="stylesheet" href="style.css">
   <!-- defer: скрипт выполнится после загрузки страницы и не тормозит её показ -->
@@ -98,11 +97,11 @@
           <!-- <picture>: браузер берёт первый формат, который умеет (AVIF → WebP → JPG),
                а из srcset — размер под свой экран (sizes подсказывает, какой ширины будет картинка). -->
           <picture>
-            <source type="image/avif" srcset="images/hero-480.avif 480w, images/hero-800.avif 800w, images/hero-1024.avif 1024w"
+            <source type="image/avif" srcset="images/hero-480.avif 480w, images/hero-600.avif 600w, images/hero-800.avif 800w, images/hero-1024.avif 1024w"
                     sizes="(width >= 52rem) 34rem, 90vw">
-            <source type="image/webp" srcset="images/hero-480.webp 480w, images/hero-800.webp 800w, images/hero-1024.webp 1024w"
+            <source type="image/webp" srcset="images/hero-480.webp 480w, images/hero-600.webp 600w, images/hero-800.webp 800w, images/hero-1024.webp 1024w"
                     sizes="(width >= 52rem) 34rem, 90vw">
-            <img src="images/hero-800.jpg" srcset="images/hero-480.jpg 480w, images/hero-800.jpg 800w, images/hero-1024.jpg 1024w"
+            <img src="images/hero-800.jpg" srcset="images/hero-480.jpg 480w, images/hero-600.jpg 600w, images/hero-800.jpg 800w, images/hero-1024.jpg 1024w"
                  sizes="(width >= 52rem) 34rem, 90vw"
                  alt="Двухъярусный торт с клубникой, голубикой и цветами"
                  width="1024" height="1024" fetchpriority="high">
@@ -119,9 +118,9 @@
           <article class="card reveal">
             <!-- loading="lazy" — картинка грузится, только когда до неё докрутили -->
             <picture>
-              <source type="image/avif" srcset="images/cake-berry-400.avif 400w, images/cake-berry-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
-              <source type="image/webp" srcset="images/cake-berry-400.webp 400w, images/cake-berry-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
-              <img src="images/cake-berry-800.jpg" srcset="images/cake-berry-400.jpg 400w, images/cake-berry-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
+              <source type="image/avif" srcset="images/cake-berry-400.avif 400w, images/cake-berry-600.avif 600w, images/cake-berry-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <source type="image/webp" srcset="images/cake-berry-400.webp 400w, images/cake-berry-600.webp 600w, images/cake-berry-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <img src="images/cake-berry-800.jpg" srcset="images/cake-berry-400.jpg 400w, images/cake-berry-600.jpg 600w, images/cake-berry-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
                    alt="Ягодный торт со сливочным кремом" width="800" height="600" loading="lazy">
             </picture>
             <div class="card__body">
@@ -132,9 +131,9 @@
           </article>
           <article class="card reveal">
             <picture>
-              <source type="image/avif" srcset="images/cake-choco-400.avif 400w, images/cake-choco-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
-              <source type="image/webp" srcset="images/cake-choco-400.webp 400w, images/cake-choco-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
-              <img src="images/cake-choco-800.jpg" srcset="images/cake-choco-400.jpg 400w, images/cake-choco-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
+              <source type="image/avif" srcset="images/cake-choco-400.avif 400w, images/cake-choco-600.avif 600w, images/cake-choco-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <source type="image/webp" srcset="images/cake-choco-400.webp 400w, images/cake-choco-600.webp 600w, images/cake-choco-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <img src="images/cake-choco-800.jpg" srcset="images/cake-choco-400.jpg 400w, images/cake-choco-600.jpg 600w, images/cake-choco-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
                    alt="Шоколадный торт с глазурью и вишней" width="800" height="600" loading="lazy">
             </picture>
             <div class="card__body">
@@ -145,9 +144,9 @@
           </article>
           <article class="card reveal">
             <picture>
-              <source type="image/avif" srcset="images/cake-kids-400.avif 400w, images/cake-kids-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
-              <source type="image/webp" srcset="images/cake-kids-400.webp 400w, images/cake-kids-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
-              <img src="images/cake-kids-800.jpg" srcset="images/cake-kids-400.jpg 400w, images/cake-kids-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
+              <source type="image/avif" srcset="images/cake-kids-400.avif 400w, images/cake-kids-600.avif 600w, images/cake-kids-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <source type="image/webp" srcset="images/cake-kids-400.webp 400w, images/cake-kids-600.webp 600w, images/cake-kids-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <img src="images/cake-kids-800.jpg" srcset="images/cake-kids-400.jpg 400w, images/cake-kids-600.jpg 600w, images/cake-kids-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
                    alt="Яркий детский торт с декором" width="800" height="600" loading="lazy">
             </picture>
             <div class="card__body">
