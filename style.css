@@ -1,0 +1,335 @@
+/* =====================================================================
+   Сладкий день — стили. Современный CSS (2026), без библиотек.
+   ===================================================================== */
+
+/* ---------- 1. Переменные (дизайн-токены) ----------
+   Все цвета и размеры задаём в одном месте: поменял тут — поменялось везде.
+   oklch() — современный формат цвета: понятная яркость и сочные оттенки.
+   light-dark(светлый, тёмный) — браузер сам берёт цвет под тему телефона. */
+:root {
+  color-scheme: light dark;
+
+  --bg:        light-dark(oklch(98.5% 0.012 50), oklch(18% 0.015 30));
+  --surface:   light-dark(oklch(100% 0 0), oklch(23% 0.018 30));
+  --tint:      light-dark(oklch(95.5% 0.03 40), oklch(21% 0.02 30));
+  --text:      light-dark(oklch(25% 0.03 30), oklch(94% 0.01 50));
+  --muted:     light-dark(oklch(48% 0.03 30), oklch(75% 0.02 50));
+  --accent:    oklch(62% 0.19 15);          /* малиновый */
+  --accent-2:  oklch(80% 0.13 70);          /* карамель */
+  --line:      light-dark(oklch(90% 0.02 40), oklch(32% 0.02 30));
+
+  --radius: 1.25rem;
+  --shadow: 0 1px 2px oklch(0% 0 0 / .06), 0 12px 32px -12psx oklch(40% 0.1 20 / .25);
+
+  /* clamp(мин, желаемое, макс) — «резиновые» размеры: плавно растут от телефона к монитору */
+  --space: clamp(4rem, 3rem + 5vw, 7.5rem);
+  --font-text: "Manrope", system-ui, sans-serif;
+  --font-head: "Unbounded", "Manrope", system-ui, sans-serif;
+}
+
+/* ---------- 2. Базовые настройки ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;          /* плавная прокрутка к якорям меню */
+  scroll-padding-top: 5rem;         /* чтобы липкая шапка не закрывала заголовок раздела */
+  interpolate-size: allow-keywords; /* позволяет анимировать height: auto (аккордеон) */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 clamp(1rem, 0.95rem + 0.25vw, 1.125rem)/1.6 var(--font-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  line-height: 1.1;
+  margin: 0 0 .6em;
+  text-wrap: balance;               /* браузер сам ровно разбивает заголовок на строки */
+}
+h1 { font-size: clamp(2.2rem, 1.4rem + 4vw, 4.2rem); font-weight: 700; letter-spacing: -.02em; }
+h2 { font-size: clamp(1.8rem, 1.3rem + 2.2vw, 3rem); font-weight: 700; letter-spacing: -.01em; }
+h3 { font-size: 1.25rem; font-weight: 500; }
+p  { text-wrap: pretty; }           /* без «висячих» одиноких слов в конце абзаца */
+
+.container { width: min(100% - 2.5rem, 72rem); margin-inline: auto; }
+.container--narrow { width: min(100% - 2.5rem, 48rem); }
+.section { padding-block: var(--space); }
+.section--tinted { background: var(--tint); }
+.lead { font-size: 1.15em; color: var(--muted); max-width: 38ch; }
+
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 100;
+  background: var(--accent); color: white; padding: .6rem 1rem; border-radius: .6rem;
+  &:focus { top: 1rem; }            /* вложенность (nesting) — как в SCSS, но без сборщиков */
+}
+
+/* Обводка при навигации клавиатурой (мышью не видна) */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: .4rem; }
+
+/* ---------- 3. Кнопки ---------- */
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: 1rem 1.75rem;
+  border: 0; border-radius: 999px;
+  background: var(--accent);
+  color: white; font: 700 1rem var(--font-text); text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -10px var(--accent);
+  transition: transform .2s, box-shadow .2s, background-color .2s;
+
+  &:hover  { transform: translateY(-2px); box-shadow: 0 16px 30px -12px var(--accent); }
+  &:active { transform: translateY(0); }
+}
+.button--ghost {
+  background: transparent; color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--line);
+  &:hover { box-shadow: inset 0 0 0 2px var(--accent); }
+}
+.button--small { padding: .65rem 1.2rem; font-size: .95rem; }
+.button--wide { width: 100%; }
+
+/* ---------- 4. Шапка: «стекло» + липкая ---------- */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in oklch, var(--bg) 75%, transparent);   /* полупрозрачный фон */
+  backdrop-filter: blur(14px) saturate(1.4);                      /* размытие под шапкой */
+  border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+}
+.header__inner { display: flex; align-items: center; gap: 1rem; min-height: 4.25rem; }
+.logo { font: 700 1.1rem var(--font-head); text-decoration: none; margin-right: auto; white-space: nowrap; }
+
+/* Меню на компьютере — просто строка ссылок */
+.menu {
+  display: flex; gap: 1.75rem; align-items: center;
+  /* сбрасываем встроенные стили popover: на ПК меню — обычная строка в шапке */
+  position: static; inset: auto; margin: 0; padding: 0; border: 0;
+  background: none; color: inherit; overflow: visible; width: auto; height: auto;
+}
+.menu a { text-decoration: none; font-weight: 500; color: var(--muted); transition: color .2s; }
+.menu a:hover { color: var(--accent); }
+.burger { display: none; }
+
+/* Меню на телефоне — выезжающая панель (popover) */
+@media (width < 52rem) {             /* новый синтаксис медиазапросов: «ширина меньше 52rem» */
+  .header__cta { display: none; }
+  .burger {
+    display: grid; gap: 5px; place-content: center;
+    width: 2.75rem; height: 2.75rem; border: 0; border-radius: 50%;
+    background: var(--tint); cursor: pointer;
+    span { display: block; width: 1.2rem; height: 2px; background: var(--text); border-radius: 2px; }
+  }
+  .menu[popover] {
+    display: none;                  /* на телефоне скрыто, пока не нажали бургер */
+    /* выезжающая панель справа во всю высоту */
+    position: fixed; inset: 0 0 0 auto; margin: 0; height: 100dvh; width: min(80vw, 20rem);
+    border: 0; padding: 5rem 2rem 2rem;
+    flex-direction: column; align-items: flex-start; gap: 1.5rem;
+    background: var(--surface); box-shadow: var(--shadow);
+    font-size: 1.25rem;
+
+    /* анимация появления: @starting-style задаёт, ОТКУДА начинать */
+    transition: translate .35s cubic-bezier(.2,.8,.2,1), display .35s allow-discrete, overlay .35s allow-discrete;
+    translate: 100% 0;
+    &:popover-open { display: flex; translate: 0 0; }
+    @starting-style { &:popover-open { translate: 100% 0; } }
+    &::backdrop { background: oklch(0% 0 0 / .35); backdrop-filter: blur(3px); }
+  }
+  .menu__phone { color: var(--accent) !important; font-weight: 700 !important; }
+}
+@media (width >= 52rem) { .menu__phone { display: none; } }
+
+/* ---------- 5. Первый экран ---------- */
+.hero {
+  position: relative; overflow: clip;
+  padding-block: clamp(2.5rem, 2rem + 4vw, 6rem);
+  /* мягкие цветные пятна на фоне — чистый CSS, без картинок */
+  background:
+    radial-gradient(40rem 30rem at 85% 10%, color-mix(in oklch, var(--accent-2) 35%, transparent), transparent 70%),
+    radial-gradient(35rem 25rem at 0% 90%, color-mix(in oklch, var(--accent) 18%, transparent), transparent 70%);
+}
+.hero__inner { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (width >= 52rem) { .hero__inner { grid-template-columns: 1.1fr 1fr; } }
+
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
+h1 em { font-style: normal; color: var(--accent); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 2rem; }
+
+.chips {
+  display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; list-style: none;
+  li { padding: .45rem .9rem; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); font-size: .9rem; }
+}
+
+.hero__image {
+  margin: 0;
+  img {
+    width: 100%; aspect-ratio: 1; object-fit: cover;
+    border-radius: 2.5rem 2.5rem 2.5rem .75rem;
+    box-shadow: var(--shadow);
+    background: var(--tint);          /* пока картинка грузится — мягкий фон, а не пустота */
+    rotate: 2deg;
+    transition: rotate .6s;
+  }
+  &:hover img { rotate: 0deg; }
+}
+
+/* ---------- 6. Карточки ---------- */
+.cards {
+  display: grid; gap: 1.5rem;
+  /* auto-fill + minmax: столько колонок, сколько влезет (3 на ПК, 1 на телефоне) — без медиазапросов */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+}
+.card {
+  container-type: inline-size;        /* контейнерный запрос: карточка «знает» свою ширину */
+  background: var(--surface); border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .3s, box-shadow .3s;
+  img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--tint); transition: scale .5s; }
+  &:hover { transform: translateY(-6px); }
+  &:hover img { scale: 1.05; }
+  p { color: var(--muted); margin: 0 0 1rem; }
+}
+.card__body { padding: 1.25rem 1.5rem 1.5rem; }
+.price { font: 700 1.15rem var(--font-head); color: var(--accent) !important; margin: 0 !important; }
+@container (width > 22rem) { .card__body { padding: 1.5rem 1.75rem 1.75rem; } }
+
+/* ---------- 7. Шаги ---------- */
+.steps {
+  display: grid; gap: 1.25rem; padding: 0; margin: 0; list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  counter-reset: step;
+  li {
+    counter-increment: step;
+    background: var(--surface); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);
+    &::before {                       /* номер шага рисуется самим CSS (counter) */
+      content: counter(step, decimal-leading-zero);
+      display: block; margin-bottom: .75rem;
+      font: 700 2.5rem var(--font-head);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      background-clip: text; color: transparent;   /* градиентный текст */
+    }
+    b { display: block; font-size: 1.1rem; }
+  }
+}
+
+/* ---------- 8. Отзывы: карусель на scroll-snap ---------- */
+.reviews {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(85%, 24rem); gap: 1.25rem;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;      /* карточка «примагничивается» при пролистывании */
+  padding: .5rem max(1.25rem, (100% - 72rem) / 2) 1.5rem;
+  scroll-padding-inline: max(1.25rem, (100% - 72rem) / 2);
+  scrollbar-width: thin; scrollbar-color: var(--accent) transparent;
+}
+.review {
+  scroll-snap-align: start;
+  margin: 0; padding: 1.75rem; border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow);
+  p { margin: 0 0 1rem; font-size: 1.1rem; }
+  cite { font-style: normal; font-weight: 700; color: var(--muted); }
+}
+
+/* ---------- 9. FAQ-аккордеон с плавным раскрытием ---------- */
+details {
+  background: var(--surface); border-radius: var(--radius); margin-bottom: .75rem; box-shadow: var(--shadow);
+  summary {
+    list-style: none; cursor: pointer; padding: 1.25rem 3.5rem 1.25rem 1.5rem; position: relative;
+    font-weight: 700; font-size: 1.05rem;
+    &::-webkit-details-marker { display: none; }
+    &::after {
+      content: "+"; position: absolute; right: 1.5rem; top: 50%; translate: 0 -50%;
+      font: 500 1.6rem var(--font-head); color: var(--accent); transition: rotate .3s;
+    }
+  }
+  &[open] summary::after { rotate: 45deg; }
+  p { margin: 0; padding: 0 1.5rem 1.25rem; color: var(--muted); }
+  /* плавное раскрытие ответа (Chrome/Edge; в других просто открывается) */
+  &::details-content { block-size: 0; overflow: clip; transition: block-size .35s, content-visibility .35s allow-discrete; }
+  &[open]::details-content { block-size: auto; }
+}
+
+/* ---------- 10. Заявка и форма ---------- */
+.order { display: grid; gap: 2.5rem; align-items: start; }
+@media (width >= 52rem) { .order { grid-template-columns: 1fr 1.1fr; } }
+
+.checks {
+  padding: 0; list-style: none;
+  li { padding-left: 2rem; position: relative; margin-bottom: .6rem; }
+  li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+}
+
+.form {
+  display: grid; gap: 1.1rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--surface); border-radius: calc(var(--radius) * 1.5); box-shadow: var(--shadow);
+}
+.field { display: grid; gap: .4rem; }
+.field label { font-weight: 700; font-size: .95rem; }
+input, textarea {
+  font: inherit; color: inherit;
+  padding: .9rem 1rem; border-radius: .9rem;
+  border: 2px solid var(--line); background: var(--bg);
+  transition: border-color .2s, box-shadow .2s;
+  &:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 20%, transparent); }
+}
+textarea { resize: vertical; field-sizing: content; min-height: 6rem; }  /* поле растёт по мере ввода */
+
+/* :user-invalid — ошибка подсвечивается только ПОСЛЕ того, как человек что-то ввёл (а не сразу) */
+.field__error { display: none; color: oklch(58% 0.2 25); font-weight: 500; }
+.field:has(input:user-invalid) {      /* :has — «родитель, внутри которого есть…» */
+  input { border-color: oklch(58% 0.2 25); }
+  .field__error { display: block; }
+}
+/* Кнопка выглядит неактивной, пока форма заполнена неверно */
+.form:has(:invalid) button[type="submit"] { opacity: .65; }
+
+/* Ловушка для ботов: уводим поле за экран (display:none некоторые боты распознают) */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form__error {
+  margin: 0; padding: .8rem 1rem; border-radius: .8rem; font-weight: 500;
+  background: color-mix(in oklch, oklch(58% 0.2 25) 15%, transparent); color: oklch(55% 0.2 25);
+}
+
+.agree { display: flex; gap: .6rem; align-items: start; font-size: .85rem; color: var(--muted); cursor: pointer; }
+.agree input { width: 1.15rem; height: 1.15rem; margin-top: .15rem; accent-color: var(--accent); }
+input[type="date"] { accent-color: var(--accent); }
+
+/* ---------- 11. Окно «Спасибо» ---------- */
+.dialog {
+  border: 0; border-radius: calc(var(--radius) * 1.5); padding: 2.5rem 2rem; text-align: center;
+  background: var(--surface); color: var(--text); box-shadow: var(--shadow); max-width: 22rem;
+  &::backdrop { background: oklch(0% 0 0 / .4); backdrop-filter: blur(4px); }
+  &[open] { animation: pop .4s cubic-bezier(.2,1.4,.4,1); }
+}
+.dialog__emoji { font-size: 3rem; margin: 0; }
+@keyframes pop { from { scale: .8; opacity: 0; } }
+
+/* ---------- 12. Подвал ---------- */
+.footer { padding-block: 2rem; border-top: 1px solid var(--line); color: var(--muted); }
+.footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+.footer p { margin: 0; }
+
+/* ---------- 13. Появление блоков при прокрутке ----------
+   Scroll-driven animations: анимация привязана к прокрутке, а не ко времени. Без единой строки JS.
+   @supports — включаем только там, где браузер это умеет; в остальных блоки просто видны. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+@keyframes reveal { from { opacity: 0; translate: 0 2.5rem; } }
+
+/* Уважение к людям, у которых в системе отключены анимации */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

@@ -1,0 +1,4 @@
+# Запрет открывать config.php из браузера (для хостингов на Apache)
+<Files "config.php">
+  Require all denied
+</Files>

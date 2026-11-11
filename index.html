@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Сладкий день — торты на заказ в Ижевске</title>
+  <meta name="description" content="Торты и капкейки на заказ ручной работы. Натуральные продукты, доставка по городу. Оставьте заявку — перезвоним за 15 минут.">
+
+  <!-- Цвет панели браузера на телефоне (отдельно для светлой и тёмной темы) -->
+  <meta name="theme-color" content="#fff7f2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1d1412" media="(prefers-color-scheme: dark)">
+
+  <!-- Open Graph: красивое превью, когда ссылку присылают в Telegram/WhatsApp/VK -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Сладкий день — торты на заказ">
+  <meta property="og:description" content="Ручная работа, натуральные сливки и ягоды. Изготовим за 2 дня.">
+  <meta property="og:image" content="https://mrudman87-blip.github.io/sweet-day/images/og.jpg">
+  <meta property="og:url" content="https://mrudman87-blip.github.io/sweet-day/">
+  <meta property="og:locale" content="ru_RU">
+
+  <!-- Иконка вкладки: SVG прямо в коде, без отдельного файла -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+
+  <!-- Шрифты: Unbounded (заголовки) и Manrope (текст), оба с кириллицей.
+       preconnect заранее открывает соединение — шрифты грузятся быстрее. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <!-- defer: скрипт выполнится после загрузки страницы и не тормозит её показ -->
+  <script src="main.js" defer></script>
+
+  <!-- Микроразметка Schema.org: Яндекс и Google понимают, что это кондитерская,
+       и могут показать в выдаче адрес, телефон, рейтинг. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Bakery",
+    "name": "Сладкий день",
+    "description": "Торты и капкейки на заказ ручной работы",
+    "telephone": "+7 900 000-00-00",
+    "address": { "@type": "PostalAddress", "addressLocality": "Ижевск", "addressCountry": "RU" },
+    "priceRange": "1900–2300 ₽/кг",
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "127" }
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Ссылка «к содержимому» для тех, кто ходит по сайту клавиатурой. Видна только при Tab. -->
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a class="logo" href="#">🎂 <span>Сладкий день</span></a>
+
+      <!-- Кнопка-бургер открывает меню через Popover API (встроен в браузер, JS не нужен) -->
+      <button class="burger" popovertarget="menu" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="menu" id="menu" popover>
+        <a href="#catalog">Торты</a>
+        <a href="#how">Как заказать</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#faq">Вопросы</a>
+        <a class="menu__phone" href="tel:+79000000000">+7 900 000-00-00</a>
+      </nav>
+
+      <a class="button button--small header__cta" href="#order">Заказать</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ========== ПЕРВЫЙ ЭКРАН ========== -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <p class="eyebrow">Кондитерская ручной работы · Ижевск</p>
+          <h1>Торты, от которых <em>будут все в восторге</em></h1>
+          <p class="lead">Натуральные сливки, бельгийский шоколад и свежие ягоды. Изготовим за&nbsp;2&nbsp;дня и&nbsp;привезём к&nbsp;празднику.</p>
+          <div class="hero__actions">
+            <a class="button" href="#order">Заказать торт</a>
+            <a class="button button--ghost" href="tel:+79000000000">Позвонить</a>
+          </div>
+          <ul class="chips">
+            <li>⭐ 4,9 на Яндекс Картах</li>
+            <li>🚚 Доставка 0 ₽ от 3 кг</li>
+            <li>🍓 Без растительных сливок</li>
+          </ul>
+        </div>
+        <figure class="hero__image">
+          <!-- fetchpriority="high" — главная картинка грузится первой. width/height нужны, чтобы
+               страница не «прыгала» во время загрузки. -->
+          <!-- <picture>: браузер берёт первый формат, который умеет (AVIF → WebP → JPG),
+               а из srcset — размер под свой экран (sizes подсказывает, какой ширины будет картинка). -->
+          <picture>
+            <source type="image/avif" srcset="images/hero-480.avif 480w, images/hero-800.avif 800w, images/hero-1024.avif 1024w"
+                    sizes="(width >= 52rem) 34rem, 90vw">
+            <source type="image/webp" srcset="images/hero-480.webp 480w, images/hero-800.webp 800w, images/hero-1024.webp 1024w"
+                    sizes="(width >= 52rem) 34rem, 90vw">
+            <img src="images/hero-800.jpg" srcset="images/hero-480.jpg 480w, images/hero-800.jpg 800w, images/hero-1024.jpg 1024w"
+                 sizes="(width >= 52rem) 34rem, 90vw"
+                 alt="Двухъярусный торт с клубникой, голубикой и цветами"
+                 width="1024" height="1024" fetchpriority="high">
+          </picture>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ========== КАТАЛОГ ========== -->
+    <section class="section" id="catalog">
+      <div class="container">
+        <h2 class="reveal">Популярные торты</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <!-- loading="lazy" — картинка грузится, только когда до неё докрутили -->
+            <picture>
+              <source type="image/avif" srcset="images/cake-berry-400.avif 400w, images/cake-berry-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <source type="image/webp" srcset="images/cake-berry-400.webp 400w, images/cake-berry-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <img src="images/cake-berry-800.jpg" srcset="images/cake-berry-400.jpg 400w, images/cake-berry-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
+                   alt="Ягодный торт со сливочным кремом" width="800" height="600" loading="lazy">
+            </picture>
+            <div class="card__body">
+              <h3>Ягодный</h3>
+              <p>Ванильный бисквит, сливочный крем, свежая клубника и голубика.</p>
+              <p class="price">от 1 900 ₽/кг</p>
+            </div>
+          </article>
+          <article class="card reveal">
+            <picture>
+              <source type="image/avif" srcset="images/cake-choco-400.avif 400w, images/cake-choco-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <source type="image/webp" srcset="images/cake-choco-400.webp 400w, images/cake-choco-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <img src="images/cake-choco-800.jpg" srcset="images/cake-choco-400.jpg 400w, images/cake-choco-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
+                   alt="Шоколадный торт с глазурью и вишней" width="800" height="600" loading="lazy">
+            </picture>
+            <div class="card__body">
+              <h3>Шоколадный</h3>
+              <p>Шоколадный бисквит, ганаш из бельгийского шоколада, вишня.</p>
+              <p class="price">от 2 100 ₽/кг</p>
+            </div>
+          </article>
+          <article class="card reveal">
+            <picture>
+              <source type="image/avif" srcset="images/cake-kids-400.avif 400w, images/cake-kids-800.avif 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <source type="image/webp" srcset="images/cake-kids-400.webp 400w, images/cake-kids-800.webp 800w" sizes="(width >= 52rem) 23rem, 90vw">
+              <img src="images/cake-kids-800.jpg" srcset="images/cake-kids-400.jpg 400w, images/cake-kids-800.jpg 800w" sizes="(width >= 52rem) 23rem, 90vw"
+                   alt="Яркий детский торт с декором" width="800" height="600" loading="lazy">
+            </picture>
+            <div class="card__body">
+              <h3>Детский</h3>
+              <p>Нежный крем-чиз, яркое оформление, фигурки любимых героев.</p>
+              <p class="price">от 2 300 ₽/кг</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== КАК ЗАКАЗАТЬ ========== -->
+    <section class="section section--tinted" id="how">
+      <div class="container">
+        <h2 class="reveal">Как заказать</h2>
+        <ol class="steps">
+          <li class="reveal"><b>Оставьте заявку</b> на сайте или позвоните</li>
+          <li class="reveal"><b>Обсудим</b> вкус, вес и оформление</li>
+          <li class="reveal"><b>Испечём</b> торт за 1–2 дня</li>
+          <li class="reveal"><b>Привезём</b> в удобное время</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========== ОТЗЫВЫ: карусель на CSS scroll-snap (листается пальцем, без библиотек) ========== -->
+    <section class="section" id="reviews">
+      <div class="container">
+        <h2 class="reveal">Отзывы</h2>
+      </div>
+      <div class="reviews" tabindex="0" aria-label="Отзывы, листайте вбок">
+        <blockquote class="review">
+          <p>«Заказывали на юбилей мамы — все гости просили контакты кондитера!»</p>
+          <cite>Анна · ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+        <blockquote class="review">
+          <p>«Детский торт с машинками, сын в восторге. Очень вкусно и не приторно.»</p>
+          <cite>Дмитрий · ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+        <blockquote class="review">
+          <p>«Привезли минута в минуту, торт выглядел как на фото. Будем заказывать ещё.»</p>
+          <cite>Ольга · ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+        <blockquote class="review">
+          <p>«Попросили торт без сахара для папы — сделали, и это было очень вкусно.»</p>
+          <cite>Сергей · ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ========== ВОПРОСЫ: <details name="faq"> — аккордеон, открыт только один ответ ========== -->
+    <section class="section section--tinted" id="faq">
+      <div class="container container--narrow">
+        <h2 class="reveal">Частые вопросы</h2>
+        <details name="faq" class="reveal" open>
+          <summary>За сколько дней нужно заказывать?</summary>
+          <p>Лучше за 2–3 дня. Если торт нужен срочно — позвоните, часто можем сделать на следующий день.</p>
+        </details>
+        <details name="faq" class="reveal">
+          <summary>Какой минимальный вес торта?</summary>
+          <p>От 1,5 кг. Для небольших праздников есть бенто-торты и капкейки.</p>
+        </details>
+        <details name="faq" class="reveal">
+          <summary>Как оплатить?</summary>
+          <p>Предоплата 30% по СБП, остальное — при получении наличными или картой.</p>
+        </details>
+        <details name="faq" class="reveal">
+          <summary>Можно ли сделать торт без сахара или без глютена?</summary>
+          <p>Да, у нас есть рецепты на эритрите и безглютеновые бисквиты. Обсудим при заказе.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ========== ФОРМА ЗАЯВКИ ========== -->
+    <section class="section" id="order">
+      <div class="container order">
+        <div class="order__text reveal">
+          <h2>Оставьте заявку</h2>
+          <p class="lead">Перезвоним в течение 15 минут, поможем выбрать вкус и рассчитаем стоимость.</p>
+          <ul class="checks">
+            <li>Бесплатная дегустация начинок</li>
+            <li>Фото торта перед отправкой</li>
+            <li>Доставка в термобоксе</li>
+          </ul>
+        </div>
+
+        <form class="form reveal" id="order-form">
+          <div class="field">
+            <label for="name">Ваше имя</label>
+            <input id="name" name="name" type="text" required autocomplete="name" placeholder="Анна">
+            <!-- autocomplete — браузер сам предложит подставить имя и телефон -->
+          </div>
+          <div class="field">
+            <label for="phone">Телефон</label>
+            <input id="phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel"
+                   placeholder="+7 (900) 000-00-00" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}">
+            <small class="field__error">Введите номер полностью</small>
+          </div>
+          <div class="field">
+            <label for="date">К какой дате</label>
+            <input id="date" name="date" type="date">
+          </div>
+          <div class="field">
+            <label for="wish">Пожелания</label>
+            <textarea id="wish" name="wish" rows="3" placeholder="Вкус, вес, оформление…"></textarea>
+          </div>
+          <!-- Ловушка для спам-ботов: поле спрятано от людей. Бот его заполнит, и сервер отбросит заявку. -->
+          <div class="hp" aria-hidden="true">
+            <label for="website">Ваш сайт</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <label class="agree">
+            <input type="checkbox" name="agree" required checked>
+            <span>Согласен(на) на обработку персональных данных</span>
+          </label>
+          <button type="submit" class="button button--wide">Отправить заявку</button>
+          <p class="form__error" id="form-error" role="alert" hidden></p>
+          <!-- role="alert" — программы для незрячих сразу прочитают ошибку вслух -->
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year">2026</span> «Сладкий день», Ижевск</p>
+      <a href="tel:+79000000000">+7 900 000-00-00</a>
+    </div>
+  </footer>
+
+  <!-- Окно «Заявка отправлена»: встроенный элемент <dialog> (затемняет фон, закрывается по Esc) -->
+  <dialog class="dialog" id="thanks">
+    <p class="dialog__emoji">🎉</p>
+    <h3>Заявка отправлена!</h3>
+    <p>Перезвоним в течение 15 минут.</p>
+    <form method="dialog"><button class="button">Хорошо</button></form>
+  </dialog>
+</body>
+</html>
